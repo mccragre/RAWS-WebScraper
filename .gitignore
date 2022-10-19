@@ -1,0 +1,6 @@
+*.dbf
+*.png
+*.csv
+!NFIRS/2000/wildlands.dbf
+.DS_Store
+
