@@ -444,14 +444,12 @@ class Report():
         
         #now the dataframe is contained in self.df_rep
         
-    def QuarterlyReslice(self,filename=None,YearRange=(1990,2019)):
+    def QuarterlyReslice(self,df=None,YearRange=(1990,2019),inplace=False):
         '''
             Takes monthly timeseries and reslices it into quarters as opposed to months.
             The months in each quarter are averaged over.
-        '''
-        if filename != None:
-            df = pd.read_csv(filename)
-        else:
+        ''' 
+        if df is None:
             df = self.df_rep
             
         Nq = len(self.Qdef)
@@ -503,17 +501,20 @@ class Report():
                 else: 
                     df_quarter = pd.concat([df_quarter,pd.DataFrame(DictDF)])
                     
+        df_quarter.set_index(np.arange(df_quarter.shape[0]),inplace=True)
+
+        if inplace:
             self.df_rep = df_quarter
+        else:
+            return df_quarter
             
-    def HistavNorm(self,filename=None):
+    def HistavNorm(self,df=None,inplace=False):
         '''
             This takes QuarterlyResliced dataframes and normalizes them to an historical
             average for each quarter. Units of data are then just fractional change from
             the average of the whole dataset (per quarter over all years)
         '''
-        if filename != None:
-            df = pd.read_csv(filename)
-        else:
+        if df is None:
             df = self.df_rep
 
         Nq = len(self.Qdef)
@@ -585,4 +586,7 @@ class Report():
 
         df_norm = df_norm.rename(columns=RenameDict)
         
-        self.df_rep = df_norm
+        if inplace:
+            self.df_rep = df_norm
+        else:
+            return df_norm
