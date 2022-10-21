@@ -1,6 +1,6 @@
 *.dbf
 *.png
 *.csv
-!NFIRS/2000/wildlands.dbf
+!RAWS_SiteIDs_CA.csv
 .DS_Store
 
